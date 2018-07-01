@@ -63,6 +63,7 @@ class Data:
 
     def get_d(self):
         return self.d
+        
     def plot_raw_d(self,num,d=False): #input the n-th day
         plt.figure(figsize=(8,5),dpi = 80)
         plt.subplot(1,1,1)
