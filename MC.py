@@ -310,7 +310,7 @@ class MC:
             plt.figure(figsize=(8,5),dpi = 80) 
             plt.subplot(1,1,1)   
             plt.yticks([0,1,2,3,4,5])
-            plt.title('Wake Up Prediction')
+            plt.title('Prediction')
             X1 = []
             X2 = []
             Y1 = []
@@ -323,14 +323,16 @@ class MC:
                         X2.append(i)
                         Y2.append(self.d.transformed_interval[day][i])
             y = self.d.transformed_interval[day][wakeup_time]
-            plt.plot(X1,Y1,'blue')
-            plt.plot(X2,Y2,'red')
-            plt.plot([wakeup_time],[y],'ro')            
+            line1, = plt.plot(X1,Y1,'blue')
+            line2, = plt.plot(X2,Y2,'red')
+            point, = plt.plot([wakeup_time],[y],'ro')  
+            plt.legend((line1, line2, point), ('sleep quality curve of a night', 'sleep quality curve of given interval', 'prediction result'))
+        
         elif plot =='figure2':
             plt.figure(figsize=(8,5),dpi = 80) 
             plt.subplot(1,1,1)   
             plt.yticks([0,1,2,3,4,5])
-            plt.title('Wake Up Prediction')
+            plt.title('Prediction')
             X1 = []
             X2 = []
             Y1 = []
@@ -343,9 +345,10 @@ class MC:
                         X2.append(i)
                         Y2.append(self.data[day][i])
             y = self.data[day][wakeup_time]            
-            plt.plot(X1,Y1,'blue')
-            plt.plot(X2,Y2,'r+')
-            plt.plot([wakeup_time],[y],'ro')
+            line1, = plt.plot(X1,Y1,'blue')
+            line2, = plt.plot(X2,Y2,'r+')
+            point, = plt.plot([wakeup_time],[y],'ro')
+            plt.legend((line1, line2, point), ('sleep quality of a night', 'sleep quality at observation points', 'prediction result'))
             
         return wakeup_time
     
@@ -365,14 +368,14 @@ class MC:
             min_sleep_quality = min(self.data[day][time+1:time+1+num+1])
             error+= self.data[day][wakeup_time] - min_sleep_quality 
 #            print('each time:',self.data[day][wakeup_time] - min_sleep_quality)
-        print('error/iteration',error/iteration/self.dim)
-        return error/iteration/self.dim
+        print('error/iteration',error/iteration/(self.dim-1))
+        return error/iteration/(self.dim-1)
         
     def traditional_wakeup(self, day, time, num):
         t0 = int(self.data[day][time+1])
         wakeup_time = time
         for i  in range(num):
-            if t0 == 2:
+            if t0 == 3 or t0 == 2 or t0 == 1 or t0==4:
                 wakeup_time = time + 1 + i
                 break
             else:
@@ -472,12 +475,14 @@ if __name__ == "__main__":
     print("States:",mc.dim)
     print("Time interval",mc.d.time_interval)
     
-#    mc.mc2_wakeup(1,25,6,'figure1')
-#    mc.mc2_wakeup(1,25,6,'figure2')
+#    mc.prediction_mc1([2,3],80)
+    
+    mc.mc2_wakeup(3,32,6,'figure1')
+    mc.mc2_wakeup(3,32,6,'figure2')
 #    mc.mc2_wakeup(0,13,6)
 
-    mc.wake_up_test(100000, 6)
-    mc.wake_up_test(100000, 6, False)
+#    mc.wake_up_test(100000, 6)
+#    mc.wake_up_test(100000, 6, False)
 
 #    mc.dependency()
 #    mc.temporary_stationary()
@@ -490,4 +495,4 @@ if __name__ == "__main__":
 #    print("MC2 BIC:\n",mc.BIC(mc.data)[1])
 #    print("MC3 BIC:\n",mc.BIC(mc.data)[2])
     
-    #print(mc.rtm(mc.data))
+#    print(mc.rtm(mc.data)[1])

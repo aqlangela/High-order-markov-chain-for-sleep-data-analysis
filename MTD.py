@@ -89,7 +89,7 @@ class MTD:
         elif lambda_p + theta[0] < 1 and lambda_n - theta[0] > 0:
             lambda_p += theta[0]
             lambda_n -= theta[0]
-#            theta[0] /= 2
+            theta[0] /= 1.5
         return lambda_p, lambda_n, theta
     
     # update lambda and Q
@@ -157,7 +157,7 @@ class MTD:
                 elif self.Q[row][imax] + theta[row+1] < 1 and self.Q[row][imin] - theta[row+1] > 0:
                     self.Q[row][imax] += theta[row+1]
                     self.Q[row][imin] -= theta[row+1]
-#                    theta[row+1] /= 2
+                    theta[row+1] /= 1.5
 
         return theta
     
@@ -388,9 +388,11 @@ class MTD:
         
 if __name__ == "__main__":
     mtd = MTD()
-    #print("lambda1:\n",mtd.lambda1)
-    #print("lambda2:\n",mtd.lambda2)
-    #print("initial Q:\n",mtd.Q)
+    print("lambda1:\n",mtd.lambda1)
+    print("lambda2:\n",mtd.lambda2)
+    ini_Q = copy.deepcopy(mtd.Q)
+    print("initial Q:\n", mtd.Q)
+    
     
     cur_step = 0
     max_step = 6
@@ -400,7 +402,12 @@ if __name__ == "__main__":
     #sequence,seq =  mtd.wake_up(num,day,time)
     #print("wake up:", mtd.wake_up(num,day,time,"figure1"))
 
-#    mtd.main()
+    mtd.main()
+    print("lambda1:\n",mtd.lambda1)
+    print("lambda2:\n",mtd.lambda2)
+    Q = mtd.Q
+    print("Q:\n",mtd.Q)
+    print(Q - ini_Q)
 #    print(mtd.prediction([1,1,1],10))
 #    ll = mtd.main()
 #    print(" ")
@@ -408,13 +415,13 @@ if __name__ == "__main__":
 #    print("MTD BIC:\n",mtd.BIC())
 
     #test x times average error
-    total = 0 
-    x = 100000
-    for i in range(x):
-        (day,time) = mtd.prediction_sequence(num)[2]
-        sequence,seq =  mtd.wake_up(num,day,time)
-        #print("wake up:", mtd.wake_up(num,day,time))
-        total += mtd.error(sequence,seq,num,day,time)
-        
-    total /= (x*5)
-    print("MTD",total)
+#    total = 0 
+#    x = 100000
+#    for i in range(x):
+#        (day,time) = mtd.prediction_sequence(num)[2]
+#        sequence,seq =  mtd.wake_up(num,day,time)
+#        #print("wake up:", mtd.wake_up(num,day,time))
+#        total += mtd.error(sequence,seq,num,day,time)
+#        
+#    total /= (x*4)
+#    print("MTD",total)

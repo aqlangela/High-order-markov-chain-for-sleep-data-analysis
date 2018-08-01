@@ -75,12 +75,11 @@ class Data:
             Y1.append(i)
             idx+=1
         if d ==True:
-            X2 = []
             Y2 = []
             for i in self.transformed_d[num][2:]:
                 if self.d[num][i]!=0:    
                     Y2.append(i*self.states*100-10)
-            plt.plot(X1,Y1,'r-',X1,Y2,'b-')
+            plt.plot(X1,Y2,'b-')
         else:
             plt.plot(X1,Y1,'red') # original
               
@@ -101,13 +100,13 @@ class Data:
             print(len(X))
             plt.plot(X,Y1,'r-',X,Y2,'b-')
         else:
-            plt.plot(X,Y2,'r-')          
+            plt.plot(X,Y1,'r-')          
 
 if __name__ == "__main__":
     data = Data()
     d = data.get_d()
     print(d[1][130:])
 
-    print(len(data.raw_d[-1]))    
-    data.plot_raw_d(1,True)
-    data.plot_d(1,True)
+    print(len(data.raw_d[9]))    
+    data.plot_raw_d(9,True)
+    data.plot_d(9)

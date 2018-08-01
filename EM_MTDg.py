@@ -2,6 +2,7 @@ import math
 import data
 import dice
 import copy
+import random
 import numpy as np
 import matplotlib.pyplot as plt 
 import MTD as mtd_b
@@ -327,13 +328,13 @@ if __name__ == "__main__":
     
    #calculate average error of x times 
     total = 0 
-    x = 10000
+    x = 100000
     for i in range(x):
         (day,time) = mtdg.prediction_sequence(num)[2]
         sequence,seq =  mtdg.wake_up(num,day,time)
         #print("wake up:", mtd.wake_up(num,day,time))
         total += mtdg.error(sequence,seq,num,day,time)
         
-    total /= (x*5)
+    total /= (x*4)
     print("MTDg:",total)
     
